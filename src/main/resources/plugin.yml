@@ -1,0 +1,6 @@
+name: UtilsUI
+version: '${project.version}'
+main: com.aguiar.utilsui.UtilsUI
+api-version: '1.20'
+commands:
+  utils:
