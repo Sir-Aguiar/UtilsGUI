@@ -30,8 +30,8 @@ public class UtilsGUI implements CommandExecutor {
     Inventory inventory = Bukkit.createInventory(player, 45, inventoryTitle);
 
     inventory.setItem(20, randomTeleportElement());
+    inventory.setItem(22, boostItem());
     inventory.setItem(24, easyWayOutElement());
-
     decorateInventory(inventory);
 
     player.openInventory(inventory);
@@ -52,6 +52,20 @@ public class UtilsGUI implements CommandExecutor {
     randomTeleport.setItemMeta(itemMeta);
 
     return randomTeleport;
+  }
+
+  private ItemStack boostItem() {
+    ItemStack boostItem = new ItemStack(Material.ENCHANTING_TABLE);
+    ItemMeta itemMeta = boostItem.getItemMeta();
+
+    // IntelliJ for some reason keeps warning if no assert is made
+    assert itemMeta != null;
+
+    itemMeta.setDisplayName(String.format("%s%sItem Boost", ChatColor.ITALIC, ChatColor.AQUA));
+    itemMeta.setLore(Collections.singletonList(ChatColor.LIGHT_PURPLE + "Add secret properties to the item in your hand"));
+
+    boostItem.setItemMeta(itemMeta);
+    return boostItem;
   }
 
   private ItemStack easyWayOutElement() {

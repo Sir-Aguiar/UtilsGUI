@@ -2,10 +2,14 @@ package com.aguiar.utilsui.events;
 
 import com.aguiar.utilsui.utils.RandomTP;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 public class UtilsMenuListener implements Listener {
@@ -28,6 +32,9 @@ public class UtilsMenuListener implements Listener {
     switch (event.getRawSlot()) {
       case 20:
         handleRandomTp(player);
+        break;
+      case 22:
+        boostItem(player);
         break;
       case 24:
         player.setHealth(1);
@@ -72,5 +79,23 @@ public class UtilsMenuListener implements Listener {
     return ChatColor.translateAlternateColorCodes('&', inventoryTitle).equals(guiTitle);
   }
 
+  private void boostItem(Player player) {
+    ItemStack itemInHand = player.getInventory().getItemInMainHand();
+
+    if (itemInHand.getType() == Material.AIR) {
+      player.sendMessage(ChatColor.RED  + "You must hold an item in hand and open the GUI");
+      return;
+    }
+
+    ItemMeta itemMeta = itemInHand.getItemMeta();
+    AttributeModifier modifier = new AttributeModifier("generic.attack_damage", 25, AttributeModifier.Operation.ADD_NUMBER);
+
+    assert itemMeta != null;
+
+    itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, modifier);
+    itemInHand.setItemMeta(itemMeta);
+    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.5f, 1.0f);
+
+  }
 
 }
